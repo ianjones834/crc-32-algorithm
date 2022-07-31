@@ -1,12 +1,12 @@
 const byteOperations = require('./byte-operations');
-const divisor = '100000100110000010001110110110111';
+const generator = '100000100110000010001110110110111';
 
 module.exports.crcCalculator = (decimal) => {
   let byteString = byteOperations.decimalToBinary(decimal);
   let count = 0;
 
   byteString = byteOperations.byteCompletion(byteString);
-  byteString = byteOperations.byteStringRightLengthen(byteString, divisor.length);
+  byteString = byteOperations.byteStringRightLengthen(byteString, generator.length);
 
   while (count < 8) {
     if (byteString[0] === '0') {
@@ -14,8 +14,8 @@ module.exports.crcCalculator = (decimal) => {
       count++;
     }
     else {
-      byteString = byteOperations.byteStringRightLengthen(byteString, divisor.length);
-      byteString = byteOperations.binaryXor(byteString, divisor);
+      byteString = byteOperations.byteStringRightLengthen(byteString, generator.length);
+      byteString = byteOperations.binaryXor(byteString, generator);
     }
   }
 
