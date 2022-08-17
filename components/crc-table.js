@@ -1,13 +1,10 @@
-const r = require('./range');
 const calculator = require('./crc-calculator');
 
 module.exports.crcTable = () => {
-
-  const byteArray = r.range(0, 255);
   const crcLookUpTable = [];
 
-  for (const byte in byteArray) {
-    crcLookUpTable[byte] = calculator.crcCalculator(byteArray[byte]);
+  for (let decimal = 0; decimal < 256; decimal++) {
+    crcLookUpTable.push(calculator.crcCalculator(decimal));
   }
 
   return crcLookUpTable;

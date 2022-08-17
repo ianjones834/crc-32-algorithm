@@ -1,28 +1,23 @@
-const byteOperations = require('./byte-operations');
-const generator = '100000100110000010001110110110111';
+const { Bits } = require('../../ibyte/src/bits');
+
+const generator = new Bits(parseInt('00000100110000010001110110110111', 2), 32);
 
 module.exports.crcCalculator = (decimal) => {
-  let byteString = byteOperations.decimalToBinary(decimal);
-  let count = 0;
+  let byte = new Bits (decimal, 32)
 
-  byteString = byteOperations.byteCompletion(byteString);
-  byteString = byteOperations.byteStringRightLengthen(byteString, generator.length);
+  byte = byte.shiftLeft(24);
 
-  while (count < 8) {
-    if (byteString[0] === '0') {
-      byteString = byteString.slice(1);
-      count++;
+  for (let count = 0; count < 8; count++) {
+    if (byte.toString()[0] === '0') {
+      byte = byte.shiftLeft(1);
     }
     else {
-      byteString = byteOperations.byteStringRightLengthen(byteString, generator.length);
-      byteString = byteOperations.binaryXor(byteString, generator);
+      byte = byte.shiftLeft(1);
+      byte = byte.xor(generator);
     }
   }
 
-  byteString = byteOperations.byteStringRightLengthen(byteString, 32);
-  byteString = byteOperations.byteStringRightShorten(byteString, 32);
-
-  const crcTableElement = byteOperations.binaryToHex(byteString);
+  const crcTableElement = byte;
 
   return crcTableElement;
 };

@@ -1,34 +1,18 @@
 const table = require('./crc-table');
-const byteOp = require('./byte-operations');
+const { Bits } = require('../../ibyte/src/bits');
 
 module.exports.crcAlgorithm = (dataBuf) => {
   const crcTable = table.crcTable();
 
-  let crcValue = 0;
-  let newByte = 0;
+  let crcValue = new Bits(0, 32);
+  let newByte = new Bits(0, 32);
 
-  for (let byteIndex = 0; byteIndex < dataBuf.length; byteIndex++) {
-    newByte = byteOp.byteCompletion(byteOp.decimalToBinary(dataBuf[byteIndex]));
-    crcValue = byteOp.byteCompletion(byteOp.decimalToBinary(crcValue));
+  for (const byte of dataBuf) {
+    newByte = new Bits(byte, 32);
 
-    newByte = byteOp.byteStringRightLengthen(newByte, 32);
-    crcValue = byteOp.byteStringLeftLengthen(crcValue, 32);
-
-    const remainder = byteOp.binaryXor(newByte, crcValue);
-
-    const remainderSignificantByte = byteOp.byteStringRightShorten(remainder, 8);
-    const crcTableIndex = byteOp.binaryToDecimal(remainderSignificantByte);
-
-    let crcTableValue = byteOp.byteCompletion(byteOp.hexToBinary(crcTable[crcTableIndex]));
-
-    let crcShortened = byteOp.byteStringLeftShorten(crcValue, 24);
-    crcShortened = byteOp.byteCompletion(crcShortened);
-
-    crcTableValue = byteOp.byteStringLeftLengthen(crcTableValue, 32);
-    crcShortened = byteOp.byteStringRightLengthen(crcShortened, 32);
-
-    crcValue = byteOp.binaryXor(crcShortened, crcTableValue);
+    let position = crcValue.xor(newByte.shiftLeft(24)).shiftRight(24).toDecimal();
+    crcValue = (crcValue.shiftLeft(8)).xor(crcTable[position]);
   }
 
-  return '0x' + byteOp.binaryToHex(crcValue).toUpperCase();
+  return '0x' + crcValue.toHex();
 };
