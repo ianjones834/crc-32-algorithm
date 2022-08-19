@@ -1,11 +1,12 @@
 const fs = require('fs');
-const algorithm = require('./components/crc-algorithm');
+const alg = require('./components/crc-algorithm');
 
 module.exports.checksumFinder = (string) => {
-  const dataBuffer = fs.readFileSync(string);
-  const result = algorithm.crcAlgorithm(dataBuffer);
+  fs.readFile(string, (err, data) => {
+    if (err) throw err;
+    console.log(alg.crcAlgorithm(data));
+  })
 
-  return result;
 };
 
-console.log(this.checksumFinder('./test.txt'));
+this.checksumFinder('./test.txt');
