@@ -1,0 +1,25 @@
+{
+  "name": "crc-32-algorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/crc-32.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianjones834/crc-32-algorithm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianjones834/crc-32-algorithm/issues"
+  },
+  "homepage": "https://github.com/ianjones834/crc-32-algorithm#readme",
+  "devDependencies": {
+    "jasmine": "^4.3.0"
+  }
+}

@@ -1,4 +1,4 @@
-const { Bits } = require('../../ibyte/src/bits');
+const { Bits } = require('../../lib/ibyte/src/bits');
 
 const generator = new Bits(parseInt('00000100110000010001110110110111', 2), 32);
 
